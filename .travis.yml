@@ -1,0 +1,9 @@
+language: go
+os:
+  - osx
+  - linux
+  - windows
+go:
+  - tip
+script:
+ - go test
