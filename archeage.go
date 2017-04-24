@@ -13,24 +13,24 @@ const (
 	timeout = time.Second * 2
 )
 
-type archeAge struct {
+type ArcheAge struct {
 	client *http.Client
 }
 
-func ArcheAge(c *http.Client) *archeAge {
+func New(c *http.Client) *ArcheAge {
 	c.Timeout = timeout
-	return &archeAge{c}
+	return &ArcheAge{c}
 }
 
-func (a *archeAge) post(url string, form io.Reader) (*goquery.Document, error) {
+func (a *ArcheAge) post(url string, form io.Reader) (*goquery.Document, error) {
 	return a.do(url, "POST", form)
 }
 
-func (a *archeAge) get(url string) (*goquery.Document, error) {
+func (a *ArcheAge) get(url string) (*goquery.Document, error) {
 	return a.do(url, "GET", nil)
 }
 
-func (a *archeAge) do(url, method string, form io.Reader) (*goquery.Document, error) {
+func (a *ArcheAge) do(url, method string, form io.Reader) (*goquery.Document, error) {
 	req, err := http.NewRequest(method, url, form)
 	if err != nil {
 		return nil, err

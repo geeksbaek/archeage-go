@@ -6,7 +6,7 @@ import (
 )
 
 func TestFetchNotice(t *testing.T) {
-	aa := ArcheAge(&http.Client{})
+	aa := New(&http.Client{})
 	_, err := aa.FetchNotice()
 	if err != nil {
 		t.Error(err)

@@ -62,7 +62,7 @@ const (
 	imageQuery      = `.eq_img img`
 )
 
-func (a *archeAge) Auction(serverGroup, itemName string) ([]AuctionSearchResult, error) {
+func (a *ArcheAge) Auction(serverGroup, itemName string) ([]AuctionSearchResult, error) {
 	searchForm := form(map[string]string{
 		"sortType":     "BUYOUT_PRICE_ASC",
 		"searchType":   "NAME",

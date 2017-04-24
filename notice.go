@@ -91,7 +91,7 @@ func eventNoticeParser(doc *goquery.Document) (notices Notices) {
 	return
 }
 
-func (a *archeAge) FetchNotice() (notices Notices, err error) {
+func (a *ArcheAge) FetchNotice() (notices Notices, err error) {
 	for _, nc := range allNoticesCategory {
 		if doc, err := a.get(nc.URL); err == nil {
 			notices = append(notices, nc.Parser(doc)...)

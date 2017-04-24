@@ -6,7 +6,7 @@ import (
 )
 
 func TestFetchServerStatus(t *testing.T) {
-	aa := ArcheAge(&http.Client{})
+	aa := New(&http.Client{})
 	_, err := aa.FetchServerStatus()
 	if err != nil {
 		t.Error(err)

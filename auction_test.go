@@ -6,7 +6,7 @@ import (
 )
 
 func TestAction(t *testing.T) {
-	aa := ArcheAge(&http.Client{})
+	aa := New(&http.Client{})
 	_, err := aa.Auction("TOTAL", "목재")
 	if err != nil {
 		t.Error(err)

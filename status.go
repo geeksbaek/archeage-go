@@ -14,7 +14,7 @@ const (
 
 type ServerStatus map[string]bool
 
-func (a *archeAge) FetchServerStatus() (serverStatus ServerStatus, err error) {
+func (a *ArcheAge) FetchServerStatus() (serverStatus ServerStatus, err error) {
 	doc, err := a.get(serverStatusURL)
 	if err != nil {
 		return
