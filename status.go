@@ -6,7 +6,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-const ServerStatusURL = "https://archeage.xlgames.com/serverstatus"
+const serverStatusURL = "https://archeage.xlgames.com/serverstatus"
 
 const (
 	serverStatusRowQuery = `table tr`
@@ -14,7 +14,11 @@ const (
 
 type ServerStatus map[string]bool
 
-func ParseServerStatus(doc *goquery.Document) (serverStatus ServerStatus, err error) {
+func (a *archeAge) FetchServerStatus() (serverStatus ServerStatus, err error) {
+	doc, err := a.get(serverStatusURL)
+	if err != nil {
+		return
+	}
 	serverStatus = ServerStatus{}
 	doc.Find(serverStatusRowQuery).Each(func(i int, s *goquery.Selection) {
 		name := strings.TrimSpace(s.Find(".server").Text())

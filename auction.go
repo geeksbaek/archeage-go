@@ -1,19 +1,12 @@
 package archeage
 
 import (
-	"io"
+	"errors"
 	"strconv"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 )
-
-// AuctionSearchParam 구조체는 경매장 검색에 사용될 인자들의 집합입니다.
-type AuctionSearchParam struct {
-	ItemName    string
-	ServerGroup string
-	ItemGrade   string
-}
 
 // AuctionSearchResult 구조체는 경매장 검색 결과를 표현합니다.
 type AuctionSearchResult struct {
@@ -58,7 +51,7 @@ func (p Price) Div(n int) (ret Price) {
 
 // url
 const (
-	AuctionURL = "https://archeage.xlgames.com/auctions/list/ajax"
+	auctionURL = "https://archeage.xlgames.com/auctions/list/ajax"
 )
 
 // query
@@ -69,18 +62,22 @@ const (
 	imageQuery      = `.eq_img img`
 )
 
-func MakeAuctionSearchForm(ap AuctionSearchParam) io.Reader {
-	return form(map[string]string{
+func (a *archeAge) Auction(serverGroup, itemName string) ([]AuctionSearchResult, error) {
+	searchForm := form(map[string]string{
 		"sortType":     "BUYOUT_PRICE_ASC",
 		"searchType":   "NAME",
-		"serverCode":   ap.ServerGroup,
-		"gradeId":      ap.ItemGrade,
-		"keyword":      ap.ItemName,
+		"serverCode":   serverGroup,
+		"keyword":      itemName,
 		"equalKeyword": "true",
 	})
-}
 
-func ParseAuction(doc *goquery.Document) (searchResults []AuctionSearchResult) {
+	doc, err := a.post(auctionURL, searchForm)
+	if err != nil {
+		return nil, err
+	}
+
+	searchResults := []AuctionSearchResult{}
+
 	doc.Find(auctionRowQuery).Each(func(i int, row *goquery.Selection) {
 		var searchResult AuctionSearchResult
 		var err error
@@ -98,7 +95,15 @@ func ParseAuction(doc *goquery.Document) (searchResults []AuctionSearchResult) {
 		searchResult.Image, _ = row.Find(imageQuery).Attr("src")
 		searchResult.SinglePrice = searchResult.TotalPrice.Div(searchResult.Quantity)
 
+		if searchResult.Image == "" {
+			return
+		}
+
 		searchResults = append(searchResults, searchResult)
 	})
-	return
+
+	if len(searchResults) == 0 {
+		return nil, errors.New("Empty Result")
+	}
+	return searchResults, nil
 }

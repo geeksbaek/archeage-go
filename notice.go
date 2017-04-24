@@ -31,12 +31,11 @@ func (old Notices) diff(new Notices) (diff Notices) {
 }
 
 type noticeCategory struct {
-	Name   string
 	URL    string
-	Parser NoticeParser
+	Parser noticeParser
 }
 
-type NoticeParser func(*goquery.Document) Notices
+type noticeParser func(*goquery.Document) Notices
 
 // query
 const (
@@ -47,7 +46,15 @@ const (
 
 const urlPrefix = "https://archeage.xlgames.com"
 
-func BasicNoticeParser(doc *goquery.Document) (notices Notices) {
+var allNoticesCategory = []noticeCategory{
+	{"https://archeage.xlgames.com/mboards/notice", basicNoticeParser},
+	{"https://archeage.xlgames.com/mboards/patchnote", basicNoticeParser},
+	{"https://archeage.xlgames.com/events", eventNoticeParser},
+	{"https://archeage.xlgames.com/mboards/inside", basicNoticeParser},
+	{"https://archeage.xlgames.com/mboards/amigo", basicNoticeParser},
+}
+
+func basicNoticeParser(doc *goquery.Document) (notices Notices) {
 	categoryName := strings.TrimSpace(doc.Find(noticeCategoryQuery).Text())
 	doc.Find(basicNoticeRowQuery).Each(func(i int, row *goquery.Selection) {
 		var notice Notice
@@ -68,7 +75,7 @@ func BasicNoticeParser(doc *goquery.Document) (notices Notices) {
 	return
 }
 
-func EventNoticeParser(doc *goquery.Document) (notices Notices) {
+func eventNoticeParser(doc *goquery.Document) (notices Notices) {
 	categoryName := strings.TrimSpace(doc.Find(noticeCategoryQuery).Text())
 	doc.Find(eventNoticeRowQuery).Each(func(i int, row *goquery.Selection) {
 		var notice Notice
@@ -84,14 +91,11 @@ func EventNoticeParser(doc *goquery.Document) (notices Notices) {
 	return
 }
 
-type DocWithParser struct {
-	doc    *goquery.Document
-	parser NoticeParser
-}
-
-func ParseNotices(dps ...DocWithParser) (notices Notices) {
-	for _, dp := range dps {
-		notices = append(notices, dp.parser(dp.doc)...)
+func (a *archeAge) FetchNotice() (notices Notices, err error) {
+	for _, nc := range allNoticesCategory {
+		if doc, err := a.get(nc.URL); err == nil {
+			notices = append(notices, nc.Parser(doc)...)
+		}
 	}
 	return
 }
