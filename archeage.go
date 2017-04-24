@@ -35,6 +35,7 @@ func (a *archeAge) do(url, method string, form io.Reader) (*goquery.Document, er
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
 	resp, err := a.client.Do(req)
 	if err != nil {
 		log.Fatal(err)
