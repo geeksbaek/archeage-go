@@ -16,7 +16,7 @@ type Notice struct {
 
 type Notices []Notice
 
-func (old Notices) diff(new Notices) (diff Notices) {
+func (old Notices) Diff(new Notices) (diff Notices) {
 	// newnotice, oldnotice are sorted by recently.
 	for _, newnotice := range new {
 		for _, oldnotice := range old {
