@@ -4,13 +4,8 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/PuerkitoBio/goquery"
-)
-
-const (
-	timeout = time.Second * 2
 )
 
 type ArcheAge struct {
@@ -18,7 +13,6 @@ type ArcheAge struct {
 }
 
 func New(c *http.Client) *ArcheAge {
-	c.Timeout = timeout
 	return &ArcheAge{c}
 }
 
