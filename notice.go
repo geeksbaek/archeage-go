@@ -16,16 +16,20 @@ type Notice struct {
 
 type Notices []Notice
 
-func (old Notices) Diff(new Notices) (diff Notices) {
-	// newnotice, oldnotice are sorted by recently.
-	for _, newnotice := range new {
-		for _, oldnotice := range old {
-			if newnotice.URL == oldnotice.URL {
-				return
-			}
+func (ns Notices) contains(n Notice) bool {
+	for _, v := range ns {
+		if v.URL == n.URL {
+			return true
 		}
-		// If element is not found in oldnotice, add it to diff.
-		diff = append(diff, newnotice)
+	}
+	return false
+}
+
+func (old Notices) Diff(new Notices) (diff Notices) {
+	for _, n := range new {
+		if !old.contains(n) {
+			diff = append(diff, n)
+		}
 	}
 	return
 }
