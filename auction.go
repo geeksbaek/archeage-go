@@ -12,6 +12,7 @@ import (
 
 // AuctionSearchResult 구조체는 경매장 검색 결과를 표현합니다.
 type AuctionSearchResult struct {
+	Name        string
 	Quantity    int
 	Image       string
 	TotalPrice  Price
@@ -66,6 +67,7 @@ const (
 // query
 const (
 	auctionRowQuery = `.tlist`
+	nameQuery       = `.name`
 	priceQuery      = `.auction-bidmoney > .buybid em.gol_num`
 	quantityQuery   = `.item-num`
 	imageQuery      = `.eq_img img`
@@ -97,6 +99,7 @@ func (a *ArcheAge) Auction(serverGroup, itemName string) ([]AuctionSearchResult,
 			n, _ := strconv.Atoi(strings.Replace(moneyCell.Text(), ",", "", -1))
 			sumIntPrice = (sumIntPrice * 100) + n
 		})
+		searchResult.Name = row.Find(nameQuery).Text()
 		searchResult.TotalPrice = IntPrice(sumIntPrice).Price()
 		if searchResult.Quantity, err = strconv.Atoi(row.Find(quantityQuery).Text()); err != nil {
 			searchResult.Quantity = 1
