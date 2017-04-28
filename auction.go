@@ -48,7 +48,10 @@ func (i IntPrice) Price() Price {
 
 // func (p Price) Add(p2 Price) (ret Price) {}
 // func (p Price) Sub(p2 Price) (ret Price) {}
-// func (p Price) Mul(n int) (ret Price) {}
+
+func (p Price) Mul(n int) (ret Price) {
+	return IntPrice(p.Int() * n).Price()
+}
 
 // Div 메소드는 Price의 값을 주어진 정수로 나눕니다.
 func (p Price) Div(n int) (ret Price) {
