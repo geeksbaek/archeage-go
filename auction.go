@@ -77,7 +77,7 @@ func (a *ArcheAge) Auction(serverGroup, itemName string) ([]AuctionSearchResult,
 		"searchType":   "NAME",
 		"serverCode":   serverGroup,
 		"keyword":      itemName,
-		"equalKeyword": "true",
+		"equalKeyword": "false",
 	})
 
 	doc, err := a.post(auctionURL, searchForm)
