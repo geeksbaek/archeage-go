@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 
+	"fmt"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -26,6 +28,10 @@ type Price struct {
 // Int 메소드는 Price 구조체를 정수로 변환합니다.
 func (p Price) Int() int {
 	return p.Bronze + p.Silver*100 + p.Gold*10000
+}
+
+func (p Price) String() string {
+	return fmt.Sprintf("%2d.%2d%2d", p.Gold, p.Silver, p.Bronze)
 }
 
 // IntPrice 타입은 정수에서 Price 타입으로 변환하기 위한 메소드를 붙이기 위한 타입입니다.
