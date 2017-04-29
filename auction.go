@@ -31,8 +31,17 @@ func (p Price) Int() int {
 	return p.Bronze + p.Silver*100 + p.Gold*10000
 }
 
-func (p Price) String() string {
-	return fmt.Sprintf("%02d.%02d%02d", p.Gold, p.Silver, p.Bronze)
+func (p Price) String() (ret string) {
+	if p.Gold != 0 {
+		ret += fmt.Sprintf("%v금 ", p.Gold)
+	}
+	if p.Silver != 0 {
+		ret += fmt.Sprintf("%v은 ", p.Silver)
+	}
+	if p.Bronze != 0 {
+		ret += fmt.Sprintf("%v동 ", p.Bronze)
+	}
+	return
 }
 
 // IntPrice 타입은 정수에서 Price 타입으로 변환하기 위한 메소드를 붙이기 위한 타입입니다.
