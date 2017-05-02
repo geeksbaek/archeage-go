@@ -208,7 +208,7 @@ func (a *ArcheAge) SearchCharactor(server, name string) (cs Characters, err erro
 		go func(i int) {
 			defer wg.Done()
 			parsedName := strings.TrimSpace(s.Find(searchCharactorNameQuery).Text())
-			if strings.Contains(parsedName, name) {
+			if parsedName == name {
 				url, ok := s.Find(searchCharactorURLQuery).Attr("href")
 				if !ok {
 					return
