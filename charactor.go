@@ -5,6 +5,8 @@ import (
 	"regexp"
 	"strings"
 
+	"sync"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -199,21 +201,27 @@ func (a *ArcheAge) SearchCharactor(server, name string) (cs Characters, err erro
 		return
 	}
 
-	cs = Characters{}
+	cs = make(Characters, doc.Find(searchCharactorQuery).Length())
+	wg := sync.WaitGroup{}
 	doc.Find(searchCharactorQuery).Each(func(i int, s *goquery.Selection) {
-		parsedName := strings.TrimSpace(s.Find(searchCharactorNameQuery).Text())
-		if strings.Contains(parsedName, name) {
-			url, ok := s.Find(searchCharactorURLQuery).Attr("href")
-			if !ok {
-				return
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			parsedName := strings.TrimSpace(s.Find(searchCharactorNameQuery).Text())
+			if strings.Contains(parsedName, name) {
+				url, ok := s.Find(searchCharactorURLQuery).Attr("href")
+				if !ok {
+					return
+				}
+				c, err := a.fetchCharactorByURL(url)
+				if err != nil {
+					return
+				}
+				cs[i] = c
 			}
-			c, err := a.fetchCharactorByURL(url)
-			if err != nil {
-				return
-			}
-			cs = append(cs, c)
-		}
+		}(i)
 	})
+	wg.Wait()
 	return
 }
 
