@@ -2,10 +2,9 @@ package archeage
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
-
-	"fmt"
 
 	"github.com/PuerkitoBio/goquery"
 )
