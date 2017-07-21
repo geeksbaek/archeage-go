@@ -3,6 +3,8 @@ package archeage
 import (
 	"strings"
 
+	"regexp"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -64,6 +66,7 @@ func basicNoticeParser(doc *goquery.Document) (notices Notices) {
 		var notice Notice
 
 		notice.Category = categoryName
+		notice.Category = regexp.MustCompile(`[\n\t]+`).ReplaceAllString(notice.Category, ": ") // for 아미고
 		if row.Find("a.pjax .tit, a.pjax strong.thumb-tit").Length() > 0 {
 			notice.Title = strings.TrimSpace(row.Find("a.pjax .tit, a.pjax strong.thumb-tit").Text())
 		} else {
