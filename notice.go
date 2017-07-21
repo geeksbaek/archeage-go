@@ -85,8 +85,8 @@ func eventNoticeParser(doc *goquery.Document) (notices Notices) {
 		var notice Notice
 
 		notice.Category = categoryName
-		notice.Title = strings.TrimSpace(row.Find("dl dt").Text())
-		notice.Description = strings.TrimSpace(row.Find("dl dd:not(.img)").Text())
+		notice.Title = strings.TrimSpace(row.Find(".cont").Text())
+		notice.Description = strings.TrimSpace(row.Find(".time").Text())
 		notice.URL, _ = row.Attr("href")
 		notice.URL = urlPrefix + strings.Split(notice.URL, "?")[0]
 
