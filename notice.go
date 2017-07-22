@@ -1,6 +1,7 @@
 package archeage
 
 import (
+	"fmt"
 	"strings"
 
 	"regexp"
@@ -16,6 +17,10 @@ type Notice struct {
 	Date        string
 }
 
+func (n Notice) String() string {
+	return fmt.Sprintf("[%v] %v %v\n", n.Category, n.Title, n.URL)
+}
+
 type Notices []Notice
 
 func (ns Notices) contains(n Notice) bool {
@@ -25,6 +30,13 @@ func (ns Notices) contains(n Notice) bool {
 		}
 	}
 	return false
+}
+
+func (ns Notices) String() (ret string) {
+	for _, v := range ns {
+		ret += v.String()
+	}
+	return
 }
 
 func (old Notices) Diff(new Notices) (diff Notices) {
