@@ -15,7 +15,7 @@ const (
 
 type ServerStatus map[string]bool
 
-func (old ServerStatus) DiffString(new ServerStatus) (formattedString string) {
+func (old ServerStatus) DiffString(new ServerStatus) (formattedString string, diff bool) {
 	for k := range new {
 		if old[k] != new[k] {
 			var line string
@@ -25,6 +25,7 @@ func (old ServerStatus) DiffString(new ServerStatus) (formattedString string) {
 				line = fmt.Sprintf("[%v] 서버 닫힘\n", k)
 			}
 			formattedString += line
+			diff = true
 		}
 	}
 	return
