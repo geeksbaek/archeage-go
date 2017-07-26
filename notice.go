@@ -25,7 +25,7 @@ type Notices []Notice
 
 func (ns Notices) contains(n Notice) bool {
 	for _, v := range ns {
-		if v.URL == n.URL {
+		if v.URL == n.URL && v.Title == n.Title {
 			return true
 		}
 	}
