@@ -57,9 +57,10 @@ type noticeParser func(*goquery.Document) Notices
 
 // query
 const (
-	noticeCategoryQuery = `.cont_head h2`
-	basicNoticeRowQuery = `.news tbody tr`
-	eventNoticeRowQuery = `ul.list-event li a`
+	noticeCategoryQuery       = `.cont_head h2`
+	basicNoticeRowQuery       = `.news tbody tr`
+	eventNoticeRowQuery       = `ul.list-event li a`
+	eventWinnerNoticeRowQuery = `.notice`
 )
 
 const urlPrefix = "https://archeage.xlgames.com"
@@ -67,9 +68,10 @@ const urlPrefix = "https://archeage.xlgames.com"
 var allNoticesCategory = []noticeCategory{
 	{"https://archeage.xlgames.com/mboards/notice", basicNoticeParser},
 	{"https://archeage.xlgames.com/mboards/patchnote", basicNoticeParser},
-	{"https://archeage.xlgames.com/events", eventNoticeParser},
 	{"https://archeage.xlgames.com/mboards/inside", basicNoticeParser},
 	{"https://archeage.xlgames.com/mboards/amigo", basicNoticeParser},
+	{"https://archeage.xlgames.com/events", eventNoticeParser},
+	{"https://archeage.xlgames.com/events/winner", eventWinnerNoticeParser},
 }
 
 func basicNoticeParser(doc *goquery.Document) (notices Notices) {
@@ -103,6 +105,23 @@ func eventNoticeParser(doc *goquery.Document) (notices Notices) {
 		notice.Title = strings.TrimSpace(row.Find(".cont").Text())
 		notice.Description = strings.TrimSpace(row.Find(".time").Text())
 		notice.URL, _ = row.Attr("href")
+		notice.URL = urlPrefix + strings.Split(notice.URL, "?")[0]
+
+		notices = append(notices, notice)
+	})
+	return
+}
+
+func eventWinnerNoticeParser(doc *goquery.Document) (notices Notices) {
+	categoryName := strings.TrimSpace(doc.Find(noticeCategoryQuery).Text())
+	doc.Find(eventWinnerNoticeRowQuery).Each(func(i int, row *goquery.Selection) {
+		var notice Notice
+
+		notice.Category = categoryName
+		notice.Title = strings.TrimSpace(row.Find(".cont").Text())
+		notice.Title = strings.TrimLeft(notice.Title, "[이벤트] ")
+		notice.Description = strings.TrimSpace(row.Find(".time").Text())
+		notice.URL, _ = row.Find("a").Attr("href")
 		notice.URL = urlPrefix + strings.Split(notice.URL, "?")[0]
 
 		notices = append(notices, notice)
