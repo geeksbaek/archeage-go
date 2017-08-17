@@ -48,6 +48,16 @@ func (old Notices) Diff(new Notices) (diff Notices) {
 	return
 }
 
+func (old Notices) Merge(new Notices) (merged Notices) {
+	merged = old
+	for _, v := range new {
+		if !old.contains(v) {
+			merged = append(merged, v)
+		}
+	}
+	return
+}
+
 type noticeCategory struct {
 	URL    string
 	Parser noticeParser
