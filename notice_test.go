@@ -16,5 +16,6 @@ func TestFetchNotice(t *testing.T) {
 		if v.Title == "" {
 			t.Error(errors.New("Cannot Parse Notice Title"))
 		}
+		// fmt.Println(v)
 	}
 }

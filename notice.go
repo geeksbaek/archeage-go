@@ -84,6 +84,8 @@ var allNoticesCategory = []noticeCategory{
 	{"https://archeage.xlgames.com/events/winner", eventWinnerNoticeParser},
 }
 
+var multiLineReg = regexp.MustCompile(`\n+`)
+
 func basicNoticeParser(doc *goquery.Document) (notices Notices) {
 	categoryName := strings.TrimSpace(doc.Find(noticeCategoryQuery).Text())
 	doc.Find(basicNoticeRowQuery).Each(func(i int, row *goquery.Selection) {
@@ -96,6 +98,7 @@ func basicNoticeParser(doc *goquery.Document) (notices Notices) {
 		} else {
 			notice.Title = strings.TrimSpace(row.Find("a.pjax").Text())
 		}
+		notice.Title = multiLineReg.ReplaceAllString(notice.Title, " ")
 		notice.Description = strings.TrimSpace(row.Find("a.pjax .txt, a.pjax span.thumb-txt").Text())
 		notice.URL, _ = row.Find("a.pjax").Attr("href")
 		notice.URL = urlPrefix + strings.Split(notice.URL, "?")[0]
@@ -113,6 +116,7 @@ func eventNoticeParser(doc *goquery.Document) (notices Notices) {
 
 		notice.Category = categoryName
 		notice.Title = strings.TrimSpace(row.Find(".cont").Text())
+		notice.Title = multiLineReg.ReplaceAllString(notice.Title, " ")
 		notice.Description = strings.TrimSpace(row.Find(".time").Text())
 		notice.URL, _ = row.Attr("href")
 		notice.URL = urlPrefix + strings.Split(notice.URL, "?")[0]
@@ -130,6 +134,7 @@ func eventWinnerNoticeParser(doc *goquery.Document) (notices Notices) {
 		notice.Category = categoryName
 		notice.Title = strings.TrimSpace(row.Find(".cont").Text())
 		notice.Title = strings.TrimLeft(notice.Title, "[이벤트] ")
+		notice.Title = multiLineReg.ReplaceAllString(notice.Title, " ")
 		notice.Description = strings.TrimSpace(row.Find(".time").Text())
 		notice.URL, _ = row.Find("a").Attr("href")
 		notice.URL = urlPrefix + strings.Split(notice.URL, "?")[0]
