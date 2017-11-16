@@ -18,10 +18,17 @@ type Notice struct {
 }
 
 func (n Notice) String() string {
-	return fmt.Sprintf("[%v] %v %v\n", n.Category, n.Title, n.URL)
+	return fmt.Sprintf("[%v] %v %v", n.Category, n.Title, n.URL)
 }
 
 type Notices []Notice
+
+func (ns Notices) String() (ret string) {
+	for _, n := range ns {
+		ret += n.String() + "\n"
+	}
+	return
+}
 
 func (ns Notices) contains(n Notice) bool {
 	for _, v := range ns {
@@ -30,13 +37,6 @@ func (ns Notices) contains(n Notice) bool {
 		}
 	}
 	return false
-}
-
-func (ns Notices) String() (ret string) {
-	for _, v := range ns {
-		ret += v.String()
-	}
-	return
 }
 
 func (old Notices) Diff(new Notices) (diff Notices) {
