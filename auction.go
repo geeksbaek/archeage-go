@@ -112,7 +112,13 @@ func (a *ArcheAge) Auction(serverGroup, itemName string) ([]AuctionSearchResult,
 		if searchResult.Quantity, err = strconv.Atoi(row.Find(quantityQuery).Text()); err != nil {
 			searchResult.Quantity = 1
 		}
-		searchResult.Image, _ = row.Find(imageQuery).Attr("src")
+		searchResult.Image = func() string {
+			src, exists := row.Find(imageQuery).Attr("src")
+			if exists {
+				src = "https:" + src
+			}
+			return src
+		}()
 		searchResult.SinglePrice = searchResult.TotalPrice.Div(searchResult.Quantity)
 
 		if searchResult.Image == "" {
