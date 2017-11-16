@@ -22,40 +22,40 @@ const (
 	searchCharactorNameQuery   = `.character_name`
 	searchCharactorServerQuery = `.character_server`
 
-	characterNameQuery   = `#container > div > section > div.head > div.character_card > a.character_name > strong`
-	characterUUIDQuery   = `#container > div > section > div.head > div.character_card > a.character_name`
-	characterServerQuery = `#container > div > section > div.head > div.character_card > span.character_server`
-	characterLevelQuery  = `#container > div > section > div.head > div.character_card > span.character_sub > span.level > span:nth-child(2)`
-	characterRaceQuery   = `#container > div > section > div.head > div.character_card > span.character_sub > span.race > span:nth-child(2)`
+	characterNameQuery   = `#container-common > div > div > div.cont_head > div > a.character_name > strong`
+	characterUUIDQuery   = `#container-common > div > div > div.cont_head > div > a.character_name`
+	characterServerQuery = `#container-common > div > div > div.cont_head > div > span.character_server`
+	characterLevelQuery  = `#container-common > div > div > div.cont_head > div > span.character_sub > span.level > span:nth-child(2)`
+	characterRaceQuery   = `#container-common > div > div > div.cont_head > div > span.character_sub > span.race > span:nth-child(2)`
 
-	expeditionNameQuery = `#container > div > section > div.head > div.character_card > span.character_exped > a > span`
+	expeditionNameQuery = `#container-common > div > div > div.cont_head > div > span.character_exped > a > span`
 
-	statHealthQuery              = `#container > div > section > div.body > div.info_stat > div.left > dl:nth-child(1) > dd`
-	statVitalityQuery            = `#container > div > section > div.body > div.info_stat > div.left > dl:nth-child(2) > dd`
-	statStrengthQuery            = `#container > div > section > div.body > div.info_stat > div.left > div > dl:nth-child(1) > dd`
-	statSpiritQuery              = `#container > div > section > div.body > div.info_stat > div.left > div > dl:nth-child(2) > dd`
-	statIntelligenceQuery        = `#container > div > section > div.body > div.info_stat > div.left > div > dl:nth-child(3) > dd`
-	statStaminaQuery             = `#container > div > section > div.body > div.info_stat > div.left > div > dl:nth-child(4) > dd`
-	statAgilityQuery             = `#container > div > section > div.body > div.info_stat > div.left > div > dl:nth-child(5) > dd`
-	statSpeedQuery               = `#container > div > section > div.body > div.info_stat > div.left > dl:nth-child(4) > dd`
-	statCastTimeQuery            = `#container > div > section > div.body > div.info_stat > div.left > dl:nth-child(5) > dd`
-	statAttackSpeedQuery         = `#container > div > section > div.body > div.info_stat > div.left > dl:nth-child(6) > dd`
-	statMeleeDPSQuery            = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(1) > dd`
-	statRangeDPSQuery            = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(2) > dd`
-	statMagicDPSQuery            = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(3) > dd`
-	statHealingPowerQuery        = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(4) > dd`
-	statDefenseQuery             = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(5) > dd`
-	statMagicDefenseQuery        = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(6) > dd`
-	statGearScoreQuery           = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(7) > dd`
-	statMeleeCriticalRateQuery   = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_2 > dl:nth-child(3) > dd`
-	statRangeCriticalRateQuery   = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_2 > dl:nth-child(6) > dd`
-	statAccuracyQuery            = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_2 > dl:nth-child(7) > dd`
-	statMagicCriticalRateQuery   = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_2 > dl:nth-child(9) > dd`
-	statHealingCriticalRateQuery = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_2 > dl:nth-child(10) > dd`
-	statResilienceQuery          = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_3 > dl:nth-child(4) > dd`
-	statToughnessQuery           = `#container > div > section > div.body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_3 > dl:nth-child(5) > dd`
+	statHealthQuery              = `#container-common > div > div > div.cont_body > div.info_stat > div.left > dl:nth-child(1) > dd`
+	statVitalityQuery            = `#container-common > div > div > div.cont_body > div.info_stat > div.left > dl:nth-child(2) > dd`
+	statStrengthQuery            = `#container-common > div > div > div.cont_body > div.info_stat > div.left > div.mid > dl:nth-child(2) > dd`
+	statSpiritQuery              = `#container-common > div > div > div.cont_body > div.info_stat > div.left > div.mid > dl:nth-child(2) > dd`
+	statIntelligenceQuery        = `#container-common > div > div > div.cont_body > div.info_stat > div.left > div.mid > dl:nth-child(3) > dd`
+	statStaminaQuery             = `#container-common > div > div > div.cont_body > div.info_stat > div.left > div.mid > dl:nth-child(4) > dd`
+	statAgilityQuery             = `#container-common > div > div > div.cont_body > div.info_stat > div.left > div.mid > dl:nth-child(5) > dd`
+	statSpeedQuery               = `#container-common > div > div > div.cont_body > div.info_stat > div.left > dl:nth-child(4) > dd`
+	statCastTimeQuery            = `#container-common > div > div > div.cont_body > div.info_stat > div.left > dl:nth-child(5) > dd`
+	statAttackSpeedQuery         = `#container-common > div > div > div.cont_body > div.info_stat > div.left > dl:nth-child(6) > dd`
+	statMeleeDPSQuery            = `#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(1) > dd`
+	statRangeDPSQuery            = `#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(2) > dd`
+	statMagicDPSQuery            = `#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(3) > dd`
+	statHealingPowerQuery        = `#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(4) > dd`
+	statDefenseQuery             = `#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(5) > dd`
+	statMagicDefenseQuery        = `#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_1 > dl:nth-child(6) > dd`
+	statGearScoreQuery           = `#container-common > div > div > div.cont_body > div.info_stat > div.left > div.bor > dl > dd > span`
+	statMeleeCriticalRateQuery   = `#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_2 > dl:nth-child(3) > dd`
+	statRangeCriticalRateQuery   = `#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_2 > dl:nth-child(6) > dd`
+	statAccuracyQuery            = `#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_2 > dl:nth-child(7) > dd`
+	statMagicCriticalRateQuery   = `#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_2 > dl:nth-child(9) > dd`
+	statHealingCriticalRateQuery = `#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_2 > dl:nth-child(10) > dd`
+	statResilienceQuery          = `#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_3 > dl:nth-child(4) > dd`
+	statToughnessQuery           = `#container-common > div > div > div.cont_body > div.info_stat > div.right > div.wrap.characterStatTabContent.characterStatTabContent_3 > dl:nth-child(5) > dd`
 
-	classNameQuery = `#container > div > section > div.head > div.character_card > div > a > strong`
+	classNameQuery = `#container-common > div > div > div.cont_head > div > span.character_sub > span.type > a > strong`
 )
 
 var (
@@ -94,6 +94,13 @@ func (c *Character) String() string {
 
 type Characters []*Character
 
+func (cs *Characters) String() (ret string) {
+	for _, c := range *cs {
+		ret += c.String() + "\n"
+	}
+	return
+}
+
 type Stat struct {
 	Health   string // 생명력
 	Vitality string // 활력
@@ -108,6 +115,8 @@ type Stat struct {
 	CastTime    string // 시전 시간(%)
 	AttackSpeed string // 공격 속도(%)
 
+	GearScore string // 장비점수
+
 	// 기본
 	MeleeDPS     string // 근접 공격력
 	RangeDPS     string // 원거리 공격력
@@ -115,7 +124,6 @@ type Stat struct {
 	HealingPower string // 치유력
 	Defense      string // 물리 방어도
 	MagicDefense string // 마법 저항도
-	GearScore    string // 장비점수
 
 	// 공격
 	// 근접 공격속도
@@ -201,7 +209,7 @@ func (a *ArcheAge) SearchCharactor(server, name string) (cs Characters, err erro
 		return
 	}
 
-	cs = make(Characters, doc.Find(searchCharactorQuery).Length())
+	cs = Characters{}
 	wg := sync.WaitGroup{}
 	doc.Find(searchCharactorQuery).Each(func(i int, s *goquery.Selection) {
 		wg.Add(1)
@@ -217,7 +225,7 @@ func (a *ArcheAge) SearchCharactor(server, name string) (cs Characters, err erro
 				if err != nil {
 					return
 				}
-				cs[i] = c
+				cs = append(cs, c)
 			}
 		}(i)
 	})
