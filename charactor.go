@@ -21,6 +21,7 @@ const (
 	searchCharactorURLQuery    = `.character_card > a`
 	searchCharactorNameQuery   = `.character_name`
 	searchCharactorServerQuery = `.character_server`
+	searchCharactorThumbQuery  = `#container-common > div > div > div.cont_head > div > a.character_name > img`
 
 	characterNameQuery   = `#container-common > div > div > div.cont_head > div > a.character_name > strong`
 	characterUUIDQuery   = `#container-common > div > div > div.cont_head > div > a.character_name`
@@ -64,6 +65,7 @@ var (
 
 type Character struct {
 	Name       string
+	Thumb      string
 	UUID       string
 	Server     string
 	Level      string
@@ -249,7 +251,14 @@ func (a *ArcheAge) fetchCharactorByURL(url string) (c *Character, err error) {
 func (a *ArcheAge) parseCharactor(doc *goquery.Document, url string) (c *Character, err error) {
 	uuid, _ := doc.Find(characterUUIDQuery).Attr("href")
 	c = &Character{
-		Name:   doc.Find(characterNameQuery).Text(),
+		Name: doc.Find(characterNameQuery).Text(),
+		Thumb: func() string {
+			src, exists := doc.Find(searchCharactorThumbQuery).Attr("src")
+			if exists {
+				src = "https:" + src
+			}
+			return src
+		}(),
 		UUID:   strings.TrimLeft(uuid, "/characters/"),
 		Server: doc.Find(characterServerQuery).Text(),
 		Level:  doc.Find(characterLevelQuery).Text(),
