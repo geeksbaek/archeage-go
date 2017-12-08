@@ -18,6 +18,29 @@ type AuctionSearchResult struct {
 	SinglePrice Price
 }
 
+// AuctionSearchResults 타입은 AuctionSearchResult 타입의 슬라이스입니다.
+type AuctionSearchResults []*AuctionSearchResult
+
+// MinimumPrice 메소드는 경매장 검색 결과에서 해당 수량만큼의 최소 가격을 반환합니다.
+func (r AuctionSearchResults) MinimumPrice(quantity int) (p Price) {
+	// TODO.
+	// AuctionSearchResults 슬라이스는 개별 가격이 낮은 순으로 정렬되어 입력됩니다.
+	// 각 슬라이스에는 가격와 수량이 각각 SinglePrice, Quantity 라는 멤버 변수에 저장되어 있습니다.
+	// 각 슬라이스를 순회하여 아이템을 낱개로 구매할 수 있다는 가정 하에,
+	// 입력받은 quantity 만큼의 아이템 가격을 반환하세요.
+
+	return
+}
+
+// MaximumPrice 메소드는 경매장 검색 결과에서 해당 수량만큼의 최대 가격을 반환합니다.
+func (r AuctionSearchResults) MaximumPrice(quantity int) (p Price, overQuantity int) {
+	// TODO.
+	// 각 슬라이스를 순회하여 아이템을 낱개로 구매할 수 없다는 가정 하에,
+	// 입력받은 quantity 만큼의 아이템 가격과 함께 초과하여 구매한 수량을 반환하세요.
+
+	return
+}
+
 // Price 구조체는 금, 은, 동으로 이루어진 가격 정보를 표현합니다.
 type Price struct {
 	Gold   int
@@ -81,7 +104,7 @@ const (
 	imageQuery      = `.eq_img img`
 )
 
-func (a *ArcheAge) Auction(serverGroup, itemName string) ([]AuctionSearchResult, error) {
+func (a *ArcheAge) Auction(serverGroup, itemName string) (AuctionSearchResults, error) {
 	searchForm := form(map[string]string{
 		"sortType":     "BUYOUT_PRICE_ASC",
 		"searchType":   "NAME",
@@ -95,7 +118,7 @@ func (a *ArcheAge) Auction(serverGroup, itemName string) ([]AuctionSearchResult,
 		return nil, err
 	}
 
-	searchResults := []AuctionSearchResult{}
+	searchResults := AuctionSearchResults{}
 
 	doc.Find(auctionRowQuery).Each(func(i int, row *goquery.Selection) {
 		var searchResult AuctionSearchResult
@@ -119,7 +142,7 @@ func (a *ArcheAge) Auction(serverGroup, itemName string) ([]AuctionSearchResult,
 			return
 		}
 
-		searchResults = append(searchResults, searchResult)
+		searchResults = append(searchResults, &searchResult)
 	})
 
 	if len(searchResults) == 0 {

@@ -18,7 +18,7 @@ type Notice struct {
 }
 
 func (n Notice) String() string {
-	return fmt.Sprintf("[%v] %v %v\n", n.Category, n.Title, n.URL)
+	return fmt.Sprintf("[%v] %v %v", n.Category, n.Title, n.URL)
 }
 
 type Notices []Notice
