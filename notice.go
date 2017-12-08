@@ -23,6 +23,13 @@ func (n Notice) String() string {
 
 type Notices []Notice
 
+func (ns Notices) String() (ret string) {
+	for _, n := range ns {
+		ret += n.String() + "\n"
+	}
+	return
+}
+
 func (ns Notices) contains(n Notice) bool {
 	for _, v := range ns {
 		if v.URL == n.URL && v.Title == n.Title {
@@ -30,13 +37,6 @@ func (ns Notices) contains(n Notice) bool {
 		}
 	}
 	return false
-}
-
-func (ns Notices) String() (ret string) {
-	for _, v := range ns {
-		ret += v.String()
-	}
-	return
 }
 
 func (old Notices) Diff(new Notices) (diff Notices) {

@@ -64,7 +64,13 @@ func (a *ArcheAge) parseExpedition(doc *goquery.Document, url string) (e *Expedi
 	}
 	e.Number = regexp.MustCompile(`/\w+/\w+/(\d+)`).FindStringSubmatch(e.URL)[1]
 	e.Nation = doc.Find("span.nation > em, span.group > em").Text()
-	e.Thumbnail, _ = doc.Find("span.exped_thumb > img").Attr("src")
+	e.Thumbnail = func() string {
+		src, exists := doc.Find("span.exped_thumb > img").Attr("src")
+		if exists {
+			src = "https:" + src
+		}
+		return src
+	}()
 	e.Level, _ = strconv.Atoi(doc.Find("div.sub > span.lv > span.count").Text())
 	// masterUUID, _ := doc.Find("a.character-link").Attr("data-uuid")
 	// expedition.Master = fetchCharacter(masterUUID)
