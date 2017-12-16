@@ -111,13 +111,14 @@ const (
 )
 
 // Auction 메소드는 입력받은 서버군과 아이템 이름으로 검색한 경매장 결과를 반환합니다.
-func (a *ArcheAge) Auction(serverGroup, itemName string) (AuctionSearchResults, error) {
+func (a *ArcheAge) Auction(serverGroup, itemName, page string) (AuctionSearchResults, error) {
 	searchForm := form(map[string]string{
 		"sortType":     "BUYOUT_PRICE_ASC",
 		"searchType":   "NAME",
 		"serverCode":   serverGroup,
 		"keyword":      itemName,
 		"equalKeyword": "false",
+		"page":         page,
 	})
 
 	doc, err := a.post(auctionURL, searchForm)
