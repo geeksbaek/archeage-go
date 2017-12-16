@@ -21,23 +21,18 @@ type AuctionSearchResult struct {
 // AuctionSearchResults 타입은 AuctionSearchResult 타입의 슬라이스입니다.
 type AuctionSearchResults []*AuctionSearchResult
 
-// MinimumPrice 메소드는 경매장 검색 결과에서 해당 수량만큼의 최소 가격을 반환합니다.
-func (r AuctionSearchResults) MinimumPrice(quantity int) (p Price) {
-	// TODO.
-	// AuctionSearchResults 슬라이스는 개별 가격이 낮은 순으로 정렬되어 입력됩니다.
-	// 각 슬라이스에는 가격와 수량이 각각 SinglePrice, Quantity 라는 멤버 변수에 저장되어 있습니다.
-	// 각 슬라이스를 순회하여 아이템을 낱개로 구매할 수 있다는 가정 하에,
-	// 입력받은 quantity 만큼의 아이템 가격을 반환하세요.
-
-	return
-}
-
-// MaximumPrice 메소드는 경매장 검색 결과에서 해당 수량만큼의 최대 가격을 반환합니다.
-func (r AuctionSearchResults) MaximumPrice(quantity int) (p Price, overQuantity int) {
-	// TODO.
-	// 각 슬라이스를 순회하여 아이템을 낱개로 구매할 수 없다는 가정 하에,
-	// 입력받은 quantity 만큼의 아이템 가격과 함께 초과하여 구매한 수량을 반환하세요.
-
+// Price 메소드는 경매장 검색 결과에서 해당 수량만큼의 가격을 반환합니다.
+func (rs AuctionSearchResults) Price(quantity int) (totalPrice Price) {
+	left := quantity
+	for _, r := range rs {
+		if r.Quantity >= left {
+			totalPrice.Add(r.SinglePrice.Mul(left))
+			break
+		} else {
+			totalPrice.Add(r.SinglePrice.Mul(r.Quantity))
+			left -= r.Quantity
+		}
+	}
 	return
 }
 
@@ -78,9 +73,17 @@ func (i IntPrice) Price() Price {
 	}
 }
 
-// func (p Price) Add(p2 Price) (ret Price) {}
-// func (p Price) Sub(p2 Price) (ret Price) {}
+// Add 메소드는 두 Price를 더합니다.
+func (p Price) Add(p2 Price) (ret Price) {
+	return IntPrice(p.Int() + p2.Int()).Price()
+}
 
+// Add 메소드는 두 Price를 뺍니다.
+func (p Price) Sub(p2 Price) (ret Price) {
+	return IntPrice(p.Int() - p2.Int()).Price()
+}
+
+// Mul 메소드는 Price의 값을 주어진 정수로 곱합니다.
 func (p Price) Mul(n int) (ret Price) {
 	return IntPrice(p.Int() * n).Price()
 }
