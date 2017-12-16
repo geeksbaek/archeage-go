@@ -25,12 +25,13 @@ type AuctionSearchResults []*AuctionSearchResult
 func (rs AuctionSearchResults) Price(quantity int) (lack bool, totalPrice Price) {
 	left := quantity
 	for _, r := range rs {
-		if r.Quantity >= left {
-			totalPrice.Add(r.SinglePrice.Mul(left))
-			left = 0
+		if left == 0 {
 			break
+		} else if r.Quantity >= left {
+			totalPrice = totalPrice.Add(r.SinglePrice.Mul(left))
+			left = 0
 		} else {
-			totalPrice.Add(r.SinglePrice.Mul(r.Quantity))
+			totalPrice = totalPrice.Add(r.SinglePrice.Mul(r.Quantity))
 			left -= r.Quantity
 		}
 	}
@@ -69,7 +70,7 @@ type IntPrice int
 // Price 메소드는 정수를 Price 타입으로 변환합니다.
 func (i IntPrice) Price() Price {
 	return Price{
-		Gold:   int(i) / 10000,
+		Gold:   (int(i) / 10000),
 		Silver: (int(i) % 10000) / 100,
 		Bronze: (int(i) % 10000) % 100,
 	}
@@ -80,7 +81,7 @@ func (p Price) Add(p2 Price) (ret Price) {
 	return IntPrice(p.Int() + p2.Int()).Price()
 }
 
-// Add 메소드는 두 Price를 뺍니다.
+// Sub 메소드는 두 Price를 뺍니다.
 func (p Price) Sub(p2 Price) (ret Price) {
 	return IntPrice(p.Int() - p2.Int()).Price()
 }
