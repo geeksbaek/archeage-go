@@ -111,56 +111,67 @@ const (
 )
 
 // Auction 메소드는 입력받은 서버군과 아이템 이름으로 검색한 경매장 결과를 반환합니다.
-func (a *ArcheAge) Auction(serverGroup, itemName, page string) (AuctionSearchResults, error) {
-	searchForm := form(map[string]string{
-		"sortType":     "BUYOUT_PRICE_ASC",
-		"searchType":   "NAME",
-		"serverCode":   serverGroup,
-		"keyword":      itemName,
-		"equalKeyword": "false",
-		"page":         page,
-	})
-
-	doc, err := a.post(auctionURL, searchForm)
-	if err != nil {
-		return nil, err
-	}
+func (a *ArcheAge) Auction(serverGroup, itemName string, quantity int) (AuctionSearchResults, error) {
 
 	searchResults := AuctionSearchResults{}
+	totalQuantity := 0
 
-	doc.Find(auctionRowQuery).Each(func(i int, row *goquery.Selection) {
-		var searchResult AuctionSearchResult
-		var err error
+	for page := 1; page < 10; page++ {
 
-		// get price
-		sumIntPrice := 0
-		row.Find(priceQuery).Each(func(i int, moneyCell *goquery.Selection) {
-			n, _ := strconv.Atoi(strings.Replace(moneyCell.Text(), ",", "", -1))
-			sumIntPrice = (sumIntPrice * 100) + n
+		searchForm := form(map[string]string{
+			"sortType":     "BUYOUT_PRICE_ASC",
+			"searchType":   "NAME",
+			"serverCode":   serverGroup,
+			"keyword":      itemName,
+			"equalKeyword": "false",
+			"page":         strconv.Itoa(page),
 		})
-		searchResult.Name = row.Find(nameQuery).Text()
-		searchResult.TotalPrice = IntPrice(sumIntPrice).Price()
-		if searchResult.Quantity, err = strconv.Atoi(row.Find(quantityQuery).Text()); err != nil {
-			searchResult.Quantity = 1
+
+		doc, err := a.post(auctionURL, searchForm)
+		if err != nil {
+			return nil, err
 		}
-		searchResult.Image = func() string {
-			src, exists := row.Find(imageQuery).Attr("src")
-			if exists {
-				src = "https:" + src
+
+		doc.Find(auctionRowQuery).Each(func(i int, row *goquery.Selection) {
+			var searchResult AuctionSearchResult
+			var err error
+
+			// get price
+			sumIntPrice := 0
+			row.Find(priceQuery).Each(func(i int, moneyCell *goquery.Selection) {
+				n, _ := strconv.Atoi(strings.Replace(moneyCell.Text(), ",", "", -1))
+				sumIntPrice = (sumIntPrice * 100) + n
+			})
+			searchResult.Name = row.Find(nameQuery).Text()
+			searchResult.TotalPrice = IntPrice(sumIntPrice).Price()
+			if searchResult.Quantity, err = strconv.Atoi(row.Find(quantityQuery).Text()); err != nil {
+				searchResult.Quantity = 1
 			}
-			return src
-		}()
-		searchResult.SinglePrice = searchResult.TotalPrice.Div(searchResult.Quantity)
+			searchResult.Image = func() string {
+				src, exists := row.Find(imageQuery).Attr("src")
+				if exists {
+					src = "https:" + src
+				}
+				return src
+			}()
+			searchResult.SinglePrice = searchResult.TotalPrice.Div(searchResult.Quantity)
 
-		if searchResult.Image == "" {
-			return
+			if searchResult.Image == "" {
+				return
+			}
+
+			totalQuantity += searchResult.Quantity
+			searchResults = append(searchResults, &searchResult)
+		})
+
+		if totalQuantity > quantity {
+			return searchResults, nil
 		}
 
-		searchResults = append(searchResults, &searchResult)
-	})
-
-	if len(searchResults) == 0 {
-		return nil, errors.New("Empty Result")
+		if len(searchResults) == 0 {
+			return nil, errors.New("Lack of quantity")
+		}
 	}
-	return searchResults, nil
+
+	return nil, errors.New("Too many requests")
 }
