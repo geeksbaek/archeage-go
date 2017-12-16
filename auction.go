@@ -22,17 +22,19 @@ type AuctionSearchResult struct {
 type AuctionSearchResults []*AuctionSearchResult
 
 // Price 메소드는 경매장 검색 결과에서 해당 수량만큼의 가격을 반환합니다.
-func (rs AuctionSearchResults) Price(quantity int) (totalPrice Price) {
+func (rs AuctionSearchResults) Price(quantity int) (lack bool, totalPrice Price) {
 	left := quantity
 	for _, r := range rs {
 		if r.Quantity >= left {
 			totalPrice.Add(r.SinglePrice.Mul(left))
+			left = 0
 			break
 		} else {
 			totalPrice.Add(r.SinglePrice.Mul(r.Quantity))
 			left -= r.Quantity
 		}
 	}
+	lack = (left != 0)
 	return
 }
 
@@ -107,6 +109,7 @@ const (
 	imageQuery      = `.eq_img img`
 )
 
+// Auction 메소드는 입력받은 서버군과 아이템 이름으로 검색한 경매장 결과를 반환합니다.
 func (a *ArcheAge) Auction(serverGroup, itemName string) (AuctionSearchResults, error) {
 	searchForm := form(map[string]string{
 		"sortType":     "BUYOUT_PRICE_ASC",
