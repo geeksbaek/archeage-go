@@ -1,7 +1,6 @@
 package archeage
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -15,17 +14,11 @@ const (
 
 type ServerStatus map[string]bool
 
-func (old ServerStatus) DiffString(new ServerStatus) (formattedString string, diff bool) {
+func (old ServerStatus) DiffString(new ServerStatus) (diff ServerStatus, isDiff bool) {
 	for k := range new {
 		if old[k] != new[k] {
-			var line string
-			if old[k] == false && new[k] == true {
-				line = fmt.Sprintf("[%v] 서버 열림\n", k)
-			} else {
-				line = fmt.Sprintf("[%v] 서버 닫힘\n", k)
-			}
-			formattedString += line
-			diff = true
+			diff[k] = (old[k] == false && new[k] == true)
+			isDiff = true
 		}
 	}
 	return
