@@ -68,7 +68,7 @@ type noticeParser func(*goquery.Document) Notices
 // query
 const (
 	noticeCategoryQuery       = `.cont_head h2`
-	basicNoticeRowQuery       = `.news tbody tr`
+	basicNoticeRowQuery       = `.news tbody tr:not(.notice)`
 	eventNoticeRowQuery       = `ul.list-event li a`
 	eventWinnerNoticeRowQuery = `.notice`
 )
