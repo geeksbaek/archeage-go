@@ -142,7 +142,7 @@ func (a *ArcheAge) Auction(serverGroup, itemName string, quantity int) (AuctionS
 				n, _ := strconv.Atoi(strings.Replace(moneyCell.Text(), ",", "", -1))
 				sumIntPrice = (sumIntPrice * 100) + n
 			})
-			searchResult.Name = row.Find(nameQuery).Text()
+			searchResult.Name = strings.TrimSpace(row.Find(nameQuery).Text())
 			searchResult.TotalPrice = IntPrice(sumIntPrice).Price()
 			if searchResult.Quantity, err = strconv.Atoi(row.Find(quantityQuery).Text()); err != nil {
 				searchResult.Quantity = 1
