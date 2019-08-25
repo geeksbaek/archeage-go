@@ -4,6 +4,6 @@ os:
   - linux
   - windows
 go:
-  - tip
+  - auto
 script:
  - go test
